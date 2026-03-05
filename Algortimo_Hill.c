@@ -22,15 +22,15 @@
 
 int mod26(int x) {
     return ((x % 26) + 26) % 26;
-}
+};
 
 int charANum(char c) {
     return (int)(tolower((unsigned char)c) - 'a');
-}
+};
 
 char numAChar(int n) {
     return (char)('a' + mod26(n));
-}
+};
 
 /* Copia solo letras en minusculas al arreglo dest, retorna longitud */
 int limpiarTexto(const char *src, char *dest) {
@@ -40,11 +40,11 @@ int limpiarTexto(const char *src, char *dest) {
         if (isalpha((unsigned char)src[i])) {
             dest[j] = (char)tolower((unsigned char)src[i]);
             j++;
-        }
-    }
+        };
+    };
     dest[j] = '\0';
     return j;
-}
+};
 
 /* ============================================================
    IMPRIMIR MATRICES
@@ -57,10 +57,10 @@ void imprimirMatriz3x3(const char *nombre, int m[3][3]) {
         printf("  | ");
         for (j = 0; j < 3; j++) {
             printf("%4d ", m[i][j]);
-        }
+        };
         printf("|\n");
-    }
-}
+    };
+};
 
 void imprimirMatriz3x3Letras(const char *nombre, int m[3][3]) {
     int i, j;
@@ -69,10 +69,10 @@ void imprimirMatriz3x3Letras(const char *nombre, int m[3][3]) {
         printf("  | ");
         for (j = 0; j < 3; j++) {
             printf("  %c  ", numAChar(m[i][j]));
-        }
+        };
         printf("|\n");
-    }
-}
+    };
+};
 
 void imprimirMatriz3xN(const char *nombre, int m[3][MAX], int n) {
     int i, j;
@@ -83,8 +83,8 @@ void imprimirMatriz3xN(const char *nombre, int m[3][MAX], int n) {
             printf("%4d ", m[i][j]);
         }
         printf("|\n");
-    }
-}
+    };
+};
 
 void imprimirMatriz3xNLetras(const char *nombre, int m[3][MAX], int n) {
     int i, j;
@@ -93,10 +93,10 @@ void imprimirMatriz3xNLetras(const char *nombre, int m[3][MAX], int n) {
         printf("  | ");
         for (j = 0; j < n; j++) {
             printf("  %c  ", numAChar(m[i][j]));
-        }
+        };
         printf("|\n");
-    }
-}
+    };
+};
 
 /* ============================================================
    DETERMINANTE, ADJUNTA E INVERSA
@@ -106,7 +106,7 @@ int determinante3x3(int m[3][3]) {
     return m[0][0] * (m[1][1]*m[2][2] - m[1][2]*m[2][1])
          - m[0][1] * (m[1][0]*m[2][2] - m[1][2]*m[2][0])
          + m[0][2] * (m[1][0]*m[2][1] - m[1][1]*m[2][0]);
-}
+};
 
 /* Calcula la adjunta (transpuesta de la matriz de cofactores) */
 void adjunta3x3(int m[3][3], int adj[3][3]) {
@@ -127,7 +127,7 @@ void adjunta3x3(int m[3][3], int adj[3][3]) {
     for (i = 0; i < 3; i++)
         for (j = 0; j < 3; j++)
             adj[i][j] = cof[j][i];
-}
+};
 
 /* Retorna el inverso de a mod 26, o -1 si no existe */
 int inversoMod26(int a) {
@@ -136,9 +136,9 @@ int inversoMod26(int a) {
     for (i = 1; i < 26; i++) {
         if (mod26(a * i) == 1)
             return i;
-    }
+    };
     return -1;
-}
+};
 
 /* Muestra det, adjunta e inversa. Llena Kinv. Retorna 1 si ok, 0 si falla. */
 int calcularInversa(int K[3][3], int Kinv[3][3]) {
@@ -161,7 +161,7 @@ int calcularInversa(int K[3][3], int Kinv[3][3]) {
         printf("\n  [!] El det mod 26 = %d no tiene inverso mod 26.\n", detMod);
         printf("      mcd(%d, 26) != 1 => clave NO valida para Hill.\n", detMod);
         return 0;
-    }
+    };
     printf("  Inverso modular:  %d^(-1) mod 26 = %d\n", detMod, detInv);
     printf("  Verificacion:     %d x %d = %d = 1 (mod 26)\n",
            detMod, detInv, detMod * detInv);
@@ -174,7 +174,7 @@ int calcularInversa(int K[3][3], int Kinv[3][3]) {
         for (j = 0; j < 3; j++)
             printf("%6d ", adj[i][j]);
         printf("|\n");
-    }
+    };
 
     for (i = 0; i < 3; i++)
         for (j = 0; j < 3; j++)
@@ -186,11 +186,11 @@ int calcularInversa(int K[3][3], int Kinv[3][3]) {
         for (j = 0; j < 3; j++)
             printf("%4d ", Kinv[i][j]);
         printf("|\n");
-    }
+    };
     imprimirMatriz3x3Letras("K^(-1)", Kinv);
 
     return 1;
-}
+};
 
 /* ============================================================
    LLENAR MATRICES DESDE TEXTO
@@ -204,8 +204,8 @@ void llenarMatrizClave(const char *clave, int K[3][3]) {
         for (row = 0; row < 3; row++) {
             K[row][col] = charANum(clave[idx]);
             idx++;
-        }
-}
+        };
+};
 
 /* Llena matriz 3xN desde texto, por columnas */
 void llenarMatriz3xN(const char *texto, int len, int m[3][MAX], int *numCols) {
@@ -214,7 +214,7 @@ void llenarMatriz3xN(const char *texto, int len, int m[3][MAX], int *numCols) {
     for (col = 0; col < *numCols; col++)
         for (row = 0; row < 3; row++)
             m[row][col] = charANum(texto[col * 3 + row]);
-}
+};
 
 /* ============================================================
    MULTIPLICACION  resultado = K * v  mod 26
@@ -227,8 +227,8 @@ void multiplyKv(int K[3][3], int v[3], int res[3]) {
         for (j = 0; j < 3; j++)
             res[i] += K[i][j] * v[j];
         res[i] = mod26(res[i]);
-    }
-}
+    };
+};
 
 /* ============================================================
    CIFRAR
@@ -249,7 +249,7 @@ void cifrar(int K[3][3], const char *mensajeLimpio, int mostrarProc) {
     while (lenMsg % 3 != 0) {
         mensaje[lenMsg] = 'x';
         lenMsg++;
-    }
+    };
     mensaje[lenMsg] = '\0';
 
     numCols = lenMsg / 3;
@@ -262,7 +262,7 @@ void cifrar(int K[3][3], const char *mensajeLimpio, int mostrarProc) {
     if (mostrarProc) {
         imprimirMatriz3xN("M (numeros)", M, numCols);
         imprimirMatriz3xNLetras("M", M, numCols);
-    }
+    };
 
     printf("\n  --- C = K * M  (columna por columna, mod 26) ---\n");
 
@@ -277,7 +277,7 @@ void cifrar(int K[3][3], const char *mensajeLimpio, int mostrarProc) {
             for (row = 0; row < 3; row++)
                 printf("%c%s", numAChar(v[row]), row < 2 ? "," : "");
             printf(")\n");
-        }
+        };
 
         multiplyKv(K, v, res);
 
@@ -289,14 +289,14 @@ void cifrar(int K[3][3], const char *mensajeLimpio, int mostrarProc) {
                     printf("%d*%d", K[row][j], v[j]);
                     suma += K[row][j] * v[j];
                     if (j < 2) printf(" + ");
-                }
+                };
                 printf(" = %d  mod 26 = %d  => '%c'\n", suma, res[row], numAChar(res[row]));
-            }
-        }
+            };
+        };
 
         for (row = 0; row < 3; row++)
             C[row][col] = res[row];
-    }
+    };
 
     /* Construir cadena cifrada (lectura por columnas) */
     j = 0;
@@ -308,13 +308,13 @@ void cifrar(int K[3][3], const char *mensajeLimpio, int mostrarProc) {
     if (mostrarProc) {
         imprimirMatriz3xN("C (numeros)", C, numCols);
         imprimirMatriz3xNLetras("C", C, numCols);
-    }
+    };
 
     printf("\n  ========================================\n");
     printf("  Mensaje original  : %s\n", mensajeLimpio);
     printf("  Texto cifrado     : %s\n", cifrado);
     printf("  ========================================\n");
-}
+};
 
 /* ============================================================
    DESCIFRAR
@@ -334,7 +334,7 @@ void descifrar(int K[3][3], const char *textoCifradoRaw, int mostrarProc) {
     if (lenTxt % 3 != 0) {
         printf("\n  [!] El texto cifrado debe tener longitud multiplo de 3.\n");
         return;
-    }
+    };
 
     if (!calcularInversa(K, Kinv)) return;
 
@@ -347,7 +347,7 @@ void descifrar(int K[3][3], const char *textoCifradoRaw, int mostrarProc) {
         imprimirMatriz3xN("C (numeros)", C, numCols);
         imprimirMatriz3xNLetras("C", C, numCols);
         printf("\n  --- M = K^(-1) * C  (columna por columna, mod 26) ---\n");
-    }
+    };
 
     for (col = 0; col < numCols; col++) {
         for (row = 0; row < 3; row++) v[row] = C[row][col];
@@ -360,7 +360,7 @@ void descifrar(int K[3][3], const char *textoCifradoRaw, int mostrarProc) {
             for (row = 0; row < 3; row++)
                 printf("%c%s", numAChar(v[row]), row < 2 ? "," : "");
             printf(")\n");
-        }
+        };
 
         multiplyKv(Kinv, v, res);
 
@@ -372,25 +372,26 @@ void descifrar(int K[3][3], const char *textoCifradoRaw, int mostrarProc) {
                     printf("%d*%d", Kinv[row][j], v[j]);
                     suma += Kinv[row][j] * v[j];
                     if (j < 2) printf(" + ");
-                }
+                };
                 printf(" = %d  mod 26 = %d  => '%c'\n", suma, res[row], numAChar(res[row]));
-            }
-        }
-
+            };
+        };
         for (row = 0; row < 3; row++)
             M[row][col] = res[row];
-    }
+    };
 
     j = 0;
-    for (col = 0; col < numCols; col++)
-        for (row = 0; row < 3; row++)
+    for (col = 0; col < numCols; col++){
+        for (row = 0; row < 3; row++){
             descifrado[j++] = numAChar(M[row][col]);
+        };
+    };
     descifrado[j] = '\0';
 
     if (mostrarProc) {
         imprimirMatriz3xN("M descifrada (numeros)", M, numCols);
         imprimirMatriz3xNLetras("M descifrada", M, numCols);
-    }
+    };
 
     printf("\n  ========================================\n");
     printf("  Texto cifrado     : %s\n", texto);
@@ -412,12 +413,8 @@ int main() {
     int lenClave;
 
     printf("=============================================\n");
-    printf("     CIFRADO DE HILL (3x3)  -  mod 26      \n");
+    printf("                CIFRADO HILL\n");
     printf("=============================================\n");
-    printf(" Convencion:\n");
-    printf("  - Clave y mensaje se llenan por COLUMNAS\n");
-    printf("    (de arriba hacia abajo)\n");
-    printf("  - Relleno con letra 'x'\n");
     printf("  - Solo letras minusculas sin acentos\n");
     printf("=============================================\n\n");
 
@@ -429,7 +426,7 @@ int main() {
     if (lenClave != 9) {
         printf("\n [!] La clave debe tener exactamente 9 letras.\n");
         return 1;
-    }
+    };
 
     llenarMatrizClave(claveL, K);
 
@@ -442,7 +439,7 @@ int main() {
         printf("\n [!] Elija una clave cuyo determinante sea coprimo con 26.\n");
         printf("     (mcd(det, 26) debe ser 1)\n");
         return 1;
-    }
+    };
 
     printf("\n  Mostrar procedimiento paso a paso? (s=si / n=no): ");
     scanf(" %c", &respProc);
@@ -456,23 +453,21 @@ int main() {
     printf("  Opcion: ");
     scanf("%d", &opcion);
 
-    if (opcion == 1) {
+    if(opcion == 1){
         char mensajeLimpio[MAX];
         printf("\n  Ingrese el mensaje a cifrar: ");
         scanf("%s", textoRaw);
         limpiarTexto(textoRaw, mensajeLimpio);
         printf("\n=== CIFRADO ===\n");
         cifrar(K, mensajeLimpio, mostrarProc);
-
-    } else if (opcion == 2) {
+    }else if (opcion == 2){
         printf("\n  Ingrese el texto cifrado: ");
         scanf("%s", textoRaw);
         printf("\n=== DESCIFRADO ===\n");
         descifrar(K, textoRaw, mostrarProc);
-
-    } else {
+    }else{
         printf("\n  [!] Opcion no valida.\n");
-    }
+    };
 
     return 0;
-}
+};
