@@ -28,67 +28,52 @@ int main(){
 	char mensaje[100] = "";				// Mensaje con máximo de 100 caracteres
 	char clave[100] = "";				// Clave con máximo de 100 caracteres
 	char cifrado[100] = "";				// Mensaje cifrado con máximo de 100 caracteres
-	char cifradoClave[100] = "";				// Mensaje cifrado con clave con máximo de 100 caracteres
+	char cifradoClave[100] = "";		// Mensaje cifrado con clave con máximo de 100 caracteres
 	
 	do{
-		//system("cls");
 		printf("=================================\n");
 		printf("||       ALGORITMO CESAR       ||\n");
 		printf("=================================\n");
 		printf("\nMENU PRINCIPAL:\n");
-		printf("\n1. Ingresar Mensaje");
-		if(mensaje[0] == '\0'){
-			printf("\t\tMensaje actual:\t[ Sin mensaje ]\n");
-		}else{
-			printf("\t\tMensaje actual:\t%s\n", mensaje);
-		};
-		printf("2. Ingresar Clave");
-		if(clave[0] == '\0'){
-			printf("\t\tClave actual:\t[ Sin clave ]\n");
-		}else{
-			printf("\t\tClave actual:\t%s\n", clave);
-		};
-		printf("3. Cifrar con S=3");
-		if(cifrado[0] == '\0'){
-			printf("\t\tCifrado S=3:\n");
-		}else{
-			printf("\t\tCifrado S=3:\t%s\n", cifrado);
-		};
-		printf("4. Cifrar con Clave");
-		if(cifradoClave[0] == '\0'){
-			printf("\t\tCifrado clave:\n");
-		}else{
-			printf("\t\tCifrado clave:\t%s\n", cifradoClave);
-		};
-		printf("5. Salir\n");
-		printf("   Opcion: ");
+		printf(" 1. Cifrar con S=3\n");
+		printf(" 2. Descifrar con S=-3\n");
+		printf(" 3. Cifrar con Clave\n");
+		printf(" 4. Descifrar con Clave\n");
+		printf(" 5. Salir\n");
+		printf("    Opcion: ");
 		scanf("%d", &op);
-		
+		system("cls");
 		switch(op){
 			case 1:
-				printf("\n\t-- Ingresar Mensaje:\n\t> ");
+				printf("\n\tCIFRAR CON DESPLAZAMIENTO S=3\n");
+				printf("\n\tMensaje (M): >> ");
 				scanf(" %[^\n]", mensaje);
-				//system("cls");
+				cifrarConDesplazamiento(mensaje, s, cifrado);
 				break;
 			case 2:
-				printf("\n\t-- Ingresar Clave:\n\t> ");
-				scanf(" %[^\n]", clave);
-				//system("cls");
-				break;				break;
-			case 3:
-				printf("Cifrar con S=3\n");
-				cifrarConDesplazamiento(mensaje, s, cifrado);
+				printf("\n\tDESCIFRAR CON DESPLAZAMIENTO S=-3\n");
+				printf("\n\tCifrado (C): >> ");
+				scanf(" %[^\n]", cifrado);
 				descifrarConDesplazamiento(mensaje, s, cifrado);
 				break;
+			case 3:
+				printf("\n\tCIFRAR CON CLAVE\n");
+				printf("\n\tMensaje (M): >> ");
+				scanf(" %[^\n]", mensaje);
+				printf("\n\tClave (K):   >> ");
+				scanf(" %[^\n]", clave);
+				cifrarConClave(mensaje, clave, cifradoClave);
+				break;
 			case 4:
-			    if(mensaje[0] == '\0' || clave[0] == '\0'){
-			        printf("Debes ingresar mensaje y clave primero\n");
-			    }else{
-			        cifrarConClave(mensaje, clave, cifradoClave);
-			    };
+			    printf("\n\tDESCIFRAR CON CLAVE\n");
+				printf("\n\tCifrado(C): >> ");
+				scanf(" %[^\n]", cifradoClave);
+				printf("\n\tClave (K):  >> ");
+				scanf(" %[^\n]", clave);
+				descifrarConClave(mensaje, clave, cifradoClave);
 			    break;
 			case 5:
-				printf("Saliendo...\n");
+				printf("\nSaliendo...\n");
 				break;
 			default:
 				printf("Opción no válida\n");
@@ -101,26 +86,108 @@ int main(){
 };
 
 void cifrarConDesplazamiento(char mensaje[], int desplazamiento, char cifrado[]){
+	char alfabetoNormal[] = "abcdefghijklmnopqrstuvwxyz";
+	char alfabetoDesplazamiento[] = "defghijklmnopqrstuvwxyzabc";
+	printf("\n\tAlfabeto:\t%s", alfabetoNormal);
+    printf("\n\tDesplazamiento:\t%s\n", alfabetoDesplazamiento);
 	int i;
-	for(i=0; mensaje[i] != '\0'; i++){
-		if(mensaje[i] >= 'a' && mensaje[i] <= 'z'){
-			cifrado[i] = ((mensaje[i] - 'a' + desplazamiento) % 26) + 'a';
-		};
-	};
-	printf("%s\n",cifrado);
+	for(i = 0; mensaje[i] != '\0'; i++){
+        if(mensaje[i] >= 'a' && mensaje[i] <= 'z'){							// Manejo de minúsculas
+            cifrado[i] = ((mensaje[i] - 'a' + desplazamiento) % 26) + 'a';
+        }else if(mensaje[i] >= 'A' && mensaje[i] <= 'Z'){					// Manejo de mayúsculas
+            cifrado[i] = ((mensaje[i] - 'A' + desplazamiento) % 26) + 'A';
+        }else{
+            cifrado[i] = mensaje[i];				// Manejo de espacios
+        };
+    };
+    cifrado[i] = '\0';								// Agregar fin de cadena
+	printf("\n\tCifrado (C):\t%s\n\n", cifrado);
 	return;
 };
 
 void descifrarConDesplazamiento(char mensaje[], int desplazamiento, char cifrado[]){
+	char alfabetoNormal[] = "abcdefghijklmnopqrstuvwxyz";
+	char alfabetoDesplazamiento[] = "defghijklmnopqrstuvwxyzabc";
 	int i;
+	
+    printf("\n\tDesplazamiento:\t%s\n", alfabetoDesplazamiento);
+	printf("\tAlfabeto:\t%s\n", alfabetoNormal);
+	
 	for(i = 0; cifrado[i] != '\0'; i++){
-		if(cifrado[i] >= 'a' && cifrado[i] <= 'z'){
-			mensaje[i] = ((cifrado[i] - 'a' - desplazamiento + 26) % 26) + 'a';
-		};
-	};
-	printf("%s\n", mensaje);
+        if(cifrado[i] >= 'a' && cifrado[i] <= 'z'){							// Manejo de minúsculas
+            mensaje[i] = ((cifrado[i] - 'a' - desplazamiento + 26) % 26) + 'a';
+        }else if(cifrado[i] >= 'A' && cifrado[i] <= 'Z'){					// Manejo de mayúsculas
+            mensaje[i] = ((cifrado[i] - 'A' - desplazamiento + 26) % 26) + 'A';
+        }else{
+            mensaje[i] = cifrado[i];				// Manejo de espacios
+        };
+    };
+    mensaje[i] = '\0';								// Agregar fin de cadena
+	printf("\n\tMensaje (M'):\t%s\n\n", mensaje);
 	return;
 };
+
+void cifrarConClave(char mensaje[], char clave[], char cifradoClave[]){
+    char alfabetoNormal[] = "abcdefghijklmnopqrstuvwxyz";
+    char alfabetoClave[27];
+    int i, j;
+    
+    construirAlfabetoClave(clave, alfabetoClave);
+    printf("\n\tAlfabeto:\t%s", alfabetoNormal);
+    printf("\n\tClave comp.:\t%s\n", alfabetoClave);
+    
+    for(i = 0; mensaje[i] != '\0'; i++){
+        
+        if(mensaje[i] >= 'a' && mensaje[i] <= 'z'){
+            int indice = mensaje[i] - 'a';
+            cifradoClave[i] = alfabetoClave[indice];						// Manejo de mayúsculas
+        }
+        else if(mensaje[i] >= 'A' && mensaje[i] <= 'Z'){
+            int indice = mensaje[i] - 'A';
+            cifradoClave[i] = alfabetoClave[indice] - 32;					// Manejo de mayúsculas
+        }
+        else{
+            cifradoClave[i] = mensaje[i];			// Manejo de espacios
+        };
+    };
+    cifradoClave[i] = '\0';							// Agregar fin de cadena
+    printf("\n\tCifrado (C):\t%s\n\n", cifradoClave);
+};
+
+void descifrarConClave(char mensaje[], char clave[], char cifradoClave[]){
+	char alfabetoNormal[] = "abcdefghijklmnopqrstuvwxyz";
+    char alfabetoClave[27];
+    int i, j;
+
+    construirAlfabetoClave(clave, alfabetoClave);
+    printf("\n\tClave comp.:\t%s\n", alfabetoClave);
+    printf("\tAlfabeto:\t%s\n", alfabetoNormal);
+
+    for(i = 0; cifradoClave[i] != '\0'; i++){
+        if(cifradoClave[i] >= 'a' && cifradoClave[i] <= 'z'){
+            for(j = 0; j < 26; j++){
+                if(cifradoClave[i] == alfabetoClave[j]){
+                    mensaje[i] = 'a' + j;
+                    break;
+                };
+            };
+        }else if(cifradoClave[i] >= 'A' && cifradoClave[i] <= 'Z'){
+            
+            char minuscula = cifradoClave[i] + 32; 	// convertir a minúscula
+            
+            for(j = 0; j < 26; j++){
+                if(minuscula == alfabetoClave[j]){
+                    mensaje[i] = ('a' + j) - 32; 	// volver a mayúscula
+                    break;
+                };
+            };
+        }else{
+            mensaje[i] = cifradoClave[i];
+        };
+    };
+    mensaje[i] = '\0';								// Agregar fin de cadena
+    printf("\n\tMensaje (M'):\t%s\n\n", mensaje);
+}
 
 void construirAlfabetoClave(char clave[], char nuevoAlfabeto[]){
     int usado[26] = {0};
@@ -142,20 +209,4 @@ void construirAlfabetoClave(char clave[], char nuevoAlfabeto[]){
         };
     };
     nuevoAlfabeto[j] = '\0';
-};
-
-void cifrarConClave(char mensaje[], char clave[], char cifradoClave[]){
-    char alfabetoNormal[] = "abcdefghijklmnopqrstuvwxyz";
-    char alfabetoClave[27];
-    int i, j;
-    construirAlfabetoClave(clave, alfabetoClave);
-    printf("\n\t Alfabeto:\t%s", alfabetoNormal);
-    printf("\n\t Clave comp.:\t%s\n", alfabetoClave);
-    for(i = 0; mensaje[i] != '\0'; i++){
-        if(mensaje[i] >= 'a' && mensaje[i] <= 'z'){
-            int indice = mensaje[i] - 'a';
-            cifradoClave[i] = alfabetoClave[indice];
-        };
-    };
-    printf("\n\t Mensaje cifrado: %s\n", cifradoClave);
 };
